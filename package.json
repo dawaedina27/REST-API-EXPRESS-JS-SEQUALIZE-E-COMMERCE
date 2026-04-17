@@ -10,7 +10,8 @@
     "format:check": "prettier --check .",
     "lint": "eslint .",
     "test": "node test/app.test.js",
-    "coverage": "c8 --reporter=text --reporter=lcov npm run test"
+    "coverage": "c8 --reporter=text --reporter=lcov npm run test",
+    "swagger:validate": "node -e \"require('@apidevtools/swagger-parser').validate('docs/swagger.json').then(() => console.log('Swagger spec is valid')).catch((error) => { console.error(error.message); process.exit(1); })\""
   },
   "keywords": [],
   "author": "",
@@ -24,6 +25,7 @@
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
+    "@apidevtools/swagger-parser": "^12.1.0",
     "@eslint/js": "^10.0.1",
     "c8": "^11.0.0",
     "eslint": "^10.2.0",
