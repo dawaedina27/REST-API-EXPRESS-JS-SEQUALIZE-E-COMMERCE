@@ -33,6 +33,10 @@ const Product = sequelize.define(
         min: 0,
       },
     },
+    categoryId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
   },
   {
     tableName: "products",

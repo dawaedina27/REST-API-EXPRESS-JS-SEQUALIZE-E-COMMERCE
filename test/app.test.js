@@ -2,6 +2,7 @@ const assert = require("node:assert/strict");
 const request = require("supertest");
 const { app } = require("../app");
 const Product = require("../models/product");
+const User = require("../models/user");
 
 function stubMethod(target, methodName, implementation) {
   const original = target[methodName];
@@ -75,6 +76,48 @@ async function run() {
     assert.deepEqual(productsResponse.body, mockProducts);
   } finally {
     restoreFindAll();
+  }
+
+  const newUserPayload = {
+    name: "Edina Dawa",
+    email: "edina@example.com",
+  };
+
+  const restoreUserCreate = stubMethod(User, "create", async (payload) => ({
+    id: 1,
+    ...payload,
+  }));
+
+  try {
+    const createUserResponse = await request(app)
+      .post("/api/users")
+      .send(newUserPayload);
+
+    assert.equal(createUserResponse.status, 201);
+    assert.equal(createUserResponse.body.id, 1);
+    assert.equal(createUserResponse.body.name, newUserPayload.name);
+    assert.equal(createUserResponse.body.email, newUserPayload.email);
+  } finally {
+    restoreUserCreate();
+  }
+
+  const mockUsers = [
+    {
+      id: 1,
+      name: "Edina Dawa",
+      email: "edina@example.com",
+    },
+  ];
+
+  const restoreUserFindAll = stubMethod(User, "findAll", async () => mockUsers);
+
+  try {
+    const usersResponse = await request(app).get("/api/users");
+
+    assert.equal(usersResponse.status, 200);
+    assert.deepEqual(usersResponse.body, mockUsers);
+  } finally {
+    restoreUserFindAll();
   }
 
   console.log("PASS test/app.test.js");

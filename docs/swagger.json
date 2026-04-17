@@ -3,7 +3,7 @@
   "info": {
     "title": "E-Commerce API",
     "version": "1.0.0",
-    "description": "REST API built with Express.js and Sequelize for products and orders."
+    "description": "REST API built with Express.js and Sequelize for products, orders, users, and core e-commerce resources. Includes request logging, JSON content-type enforcement, centralized 404 handling, and error handling middleware."
   },
   "servers": [
     {
@@ -19,6 +19,46 @@
     {
       "name": "Orders",
       "description": "Order management endpoints"
+    },
+    {
+      "name": "Users",
+      "description": "User management endpoints"
+    },
+    {
+      "name": "Categories",
+      "description": "Category management endpoints"
+    },
+    {
+      "name": "Carts",
+      "description": "Shopping cart management endpoints"
+    },
+    {
+      "name": "Cart Items",
+      "description": "Cart item management endpoints"
+    },
+    {
+      "name": "Payments",
+      "description": "Payment management endpoints"
+    },
+    {
+      "name": "Inventory",
+      "description": "Inventory movement endpoints"
+    },
+    {
+      "name": "Shipments",
+      "description": "Shipment management endpoints"
+    },
+    {
+      "name": "Reviews",
+      "description": "Product review and rating endpoints"
+    },
+    {
+      "name": "Returns",
+      "description": "Return request management endpoints"
+    },
+    {
+      "name": "System",
+      "description": "System and health endpoints"
     }
   ],
   "paths": {
@@ -316,6 +356,1389 @@
           }
         }
       }
+    },
+    "/api/users": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Create a user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get all users",
+        "responses": {
+          "200": {
+            "description": "List of users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/users/{id}": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get one user by ID",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundUser"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Users"],
+        "summary": "Update a user",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdParam"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundUser"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Users"],
+        "summary": "Delete a user",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundUser"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "tags": ["System"],
+        "summary": "API health check",
+        "responses": {
+          "200": {
+            "description": "API is up",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponse"
+                },
+                "example": {
+                  "message": "E-commerce API is running"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/categories": {
+      "post": {
+        "tags": ["Categories"],
+        "summary": "Create a categorie",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCategoryInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Categorie created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Category"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "415": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Categories"],
+        "summary": "Get all categories",
+        "responses": {
+          "200": {
+            "description": "List of categories",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Category"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/categories/{id}": {
+      "get": {
+        "tags": ["Categories"],
+        "summary": "Get one categorie by ID",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Categorie details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Category"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundCategory"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Categories"],
+        "summary": "Update a categorie",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdParam"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCategoryInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated categorie",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Category"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundCategory"
+          },
+          "415": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Categories"],
+        "summary": "Delete a categorie",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundCategory"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/carts": {
+      "post": {
+        "tags": ["Carts"],
+        "summary": "Create a cart",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCartInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Cart created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cart"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "415": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Carts"],
+        "summary": "Get all carts",
+        "responses": {
+          "200": {
+            "description": "List of carts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Cart"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/carts/{id}": {
+      "get": {
+        "tags": ["Carts"],
+        "summary": "Get one cart by ID",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cart details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cart"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundCart"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Carts"],
+        "summary": "Update a cart",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdParam"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCartInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated cart",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cart"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundCart"
+          },
+          "415": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Carts"],
+        "summary": "Delete a cart",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundCart"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/cart-items": {
+      "post": {
+        "tags": ["Cart Items"],
+        "summary": "Create a cart item",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCartItemInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Cart Item created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CartItem"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "415": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Cart Items"],
+        "summary": "Get all cart items",
+        "responses": {
+          "200": {
+            "description": "List of cart items",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CartItem"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/cart-items/{id}": {
+      "get": {
+        "tags": ["Cart Items"],
+        "summary": "Get one cart item by ID",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cart Item details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CartItem"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundCartItem"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Cart Items"],
+        "summary": "Update a cart item",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdParam"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCartItemInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated cart item",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CartItem"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundCartItem"
+          },
+          "415": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Cart Items"],
+        "summary": "Delete a cart item",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundCartItem"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/payments": {
+      "post": {
+        "tags": ["Payments"],
+        "summary": "Create a payment",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePaymentInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Payment created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payment"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "415": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Payments"],
+        "summary": "Get all payments",
+        "responses": {
+          "200": {
+            "description": "List of payments",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Payment"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/payments/{id}": {
+      "get": {
+        "tags": ["Payments"],
+        "summary": "Get one payment by ID",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Payment details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payment"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundPayment"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Payments"],
+        "summary": "Update a payment",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdParam"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePaymentInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated payment",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payment"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundPayment"
+          },
+          "415": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Payments"],
+        "summary": "Delete a payment",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundPayment"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/inventory": {
+      "post": {
+        "tags": ["Inventory"],
+        "summary": "Create a inventor",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateInventoryInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Inventor created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Inventory"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "415": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Inventory"],
+        "summary": "Get all inventory",
+        "responses": {
+          "200": {
+            "description": "List of inventory",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Inventory"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/inventory/{id}": {
+      "get": {
+        "tags": ["Inventory"],
+        "summary": "Get one inventor by ID",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Inventor details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Inventory"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundInventory"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Inventory"],
+        "summary": "Update a inventor",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdParam"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateInventoryInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated inventor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Inventory"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundInventory"
+          },
+          "415": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Inventory"],
+        "summary": "Delete a inventor",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundInventory"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/shipments": {
+      "post": {
+        "tags": ["Shipments"],
+        "summary": "Create a shipment",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateShipmentInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Shipment created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Shipment"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "415": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Shipments"],
+        "summary": "Get all shipments",
+        "responses": {
+          "200": {
+            "description": "List of shipments",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Shipment"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/shipments/{id}": {
+      "get": {
+        "tags": ["Shipments"],
+        "summary": "Get one shipment by ID",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Shipment details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Shipment"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundShipment"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Shipments"],
+        "summary": "Update a shipment",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdParam"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateShipmentInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated shipment",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Shipment"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundShipment"
+          },
+          "415": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Shipments"],
+        "summary": "Delete a shipment",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundShipment"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/reviews": {
+      "post": {
+        "tags": ["Reviews"],
+        "summary": "Create a review",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateReviewInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Review created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Review"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "415": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Reviews"],
+        "summary": "Get all reviews",
+        "responses": {
+          "200": {
+            "description": "List of reviews",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Review"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/reviews/{id}": {
+      "get": {
+        "tags": ["Reviews"],
+        "summary": "Get one review by ID",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Review details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Review"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundReview"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Reviews"],
+        "summary": "Update a review",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdParam"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateReviewInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated review",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Review"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundReview"
+          },
+          "415": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Reviews"],
+        "summary": "Delete a review",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundReview"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/returns": {
+      "post": {
+        "tags": ["Returns"],
+        "summary": "Create a return",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateReturnRequestInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Return created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReturnRequest"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "415": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Returns"],
+        "summary": "Get all returns",
+        "responses": {
+          "200": {
+            "description": "List of returns",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReturnRequest"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/returns/{id}": {
+      "get": {
+        "tags": ["Returns"],
+        "summary": "Get one return by ID",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReturnRequest"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundReturnRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Returns"],
+        "summary": "Update a return",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdParam"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateReturnRequestInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated return",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReturnRequest"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundReturnRequest"
+          },
+          "415": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Returns"],
+        "summary": "Delete a return",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundReturnRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -353,6 +1776,31 @@
           "stock": {
             "type": "integer",
             "example": 10
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "Edina Dawa"
+          },
+          "email": {
+            "type": "string",
+            "example": "edina@example.com"
           },
           "createdAt": {
             "type": "string",
@@ -488,6 +1936,33 @@
           }
         }
       },
+      "CreateUserInput": {
+        "type": "object",
+        "required": ["name", "email"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Edina Dawa"
+          },
+          "email": {
+            "type": "string",
+            "example": "edina@example.com"
+          }
+        }
+      },
+      "UpdateUserInput": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Edina D."
+          },
+          "email": {
+            "type": "string",
+            "example": "edina.d@example.com"
+          }
+        }
+      },
       "MessageResponse": {
         "type": "object",
         "properties": {
@@ -507,6 +1982,620 @@
           "error": {
             "type": "string",
             "example": "Validation error details"
+          }
+        }
+      },
+      "Category": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "Electronics"
+          },
+          "description": {
+            "type": "string",
+            "example": "Devices and gadgets"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Cart": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "userId": {
+            "type": "integer",
+            "example": 1
+          },
+          "status": {
+            "type": "string",
+            "enum": ["ACTIVE", "CHECKED_OUT", "ABANDONED"],
+            "example": "ACTIVE"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CartItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "cartId": {
+            "type": "integer",
+            "example": 1
+          },
+          "productId": {
+            "type": "integer",
+            "example": 2
+          },
+          "quantity": {
+            "type": "integer",
+            "example": 2
+          },
+          "unitPrice": {
+            "type": "string",
+            "example": "1200.00"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Payment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "orderId": {
+            "type": "integer",
+            "example": 1
+          },
+          "userId": {
+            "type": "integer",
+            "example": 1
+          },
+          "amount": {
+            "type": "string",
+            "example": "2400.00"
+          },
+          "method": {
+            "type": "string",
+            "enum": ["CARD", "MOBILE_MONEY", "BANK_TRANSFER", "CASH"],
+            "example": "CARD"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["PENDING", "PAID", "FAILED", "REFUNDED"],
+            "example": "PAID"
+          },
+          "reference": {
+            "type": "string",
+            "example": "TXN-123456"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Inventory": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "productId": {
+            "type": "integer",
+            "example": 1
+          },
+          "changeType": {
+            "type": "string",
+            "enum": ["RESTOCK", "SALE", "RETURN", "ADJUSTMENT"],
+            "example": "RESTOCK"
+          },
+          "quantityChange": {
+            "type": "integer",
+            "example": 20
+          },
+          "note": {
+            "type": "string",
+            "example": "Initial stock load"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Shipment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "orderId": {
+            "type": "integer",
+            "example": 1
+          },
+          "address": {
+            "type": "string",
+            "example": "Kampala, Uganda"
+          },
+          "trackingNumber": {
+            "type": "string",
+            "example": "TRK-0001"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["PENDING", "PACKED", "SHIPPED", "DELIVERED", "RETURNED"],
+            "example": "SHIPPED"
+          },
+          "shippedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "deliveredAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Review": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "productId": {
+            "type": "integer",
+            "example": 1
+          },
+          "userId": {
+            "type": "integer",
+            "example": 1
+          },
+          "rating": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5,
+            "example": 5
+          },
+          "comment": {
+            "type": "string",
+            "example": "Excellent product!"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ReturnRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "orderId": {
+            "type": "integer",
+            "example": 1
+          },
+          "userId": {
+            "type": "integer",
+            "example": 1
+          },
+          "reason": {
+            "type": "string",
+            "example": "Item arrived damaged"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "REQUESTED",
+              "APPROVED",
+              "REJECTED",
+              "RECEIVED",
+              "REFUNDED"
+            ],
+            "example": "REQUESTED"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CreateCategoryInput": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Electronics"
+          },
+          "description": {
+            "type": "string",
+            "example": "Devices and gadgets"
+          }
+        }
+      },
+      "UpdateCategoryInput": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Electronics & Accessories"
+          },
+          "description": {
+            "type": "string",
+            "example": "Updated description"
+          }
+        }
+      },
+      "CreateCartInput": {
+        "type": "object",
+        "required": ["userId"],
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "example": 1
+          },
+          "status": {
+            "type": "string",
+            "enum": ["ACTIVE", "CHECKED_OUT", "ABANDONED"],
+            "example": "ACTIVE"
+          }
+        }
+      },
+      "UpdateCartInput": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "example": 1
+          },
+          "status": {
+            "type": "string",
+            "enum": ["ACTIVE", "CHECKED_OUT", "ABANDONED"],
+            "example": "CHECKED_OUT"
+          }
+        }
+      },
+      "CreateCartItemInput": {
+        "type": "object",
+        "required": ["cartId", "productId", "quantity", "unitPrice"],
+        "properties": {
+          "cartId": {
+            "type": "integer",
+            "example": 1
+          },
+          "productId": {
+            "type": "integer",
+            "example": 2
+          },
+          "quantity": {
+            "type": "integer",
+            "example": 1
+          },
+          "unitPrice": {
+            "type": "number",
+            "example": 1200
+          }
+        }
+      },
+      "UpdateCartItemInput": {
+        "type": "object",
+        "properties": {
+          "cartId": {
+            "type": "integer",
+            "example": 1
+          },
+          "productId": {
+            "type": "integer",
+            "example": 2
+          },
+          "quantity": {
+            "type": "integer",
+            "example": 2
+          },
+          "unitPrice": {
+            "type": "number",
+            "example": 1200
+          }
+        }
+      },
+      "CreatePaymentInput": {
+        "type": "object",
+        "required": ["orderId", "userId", "amount", "method"],
+        "properties": {
+          "orderId": {
+            "type": "integer",
+            "example": 1
+          },
+          "userId": {
+            "type": "integer",
+            "example": 1
+          },
+          "amount": {
+            "type": "number",
+            "example": 2400
+          },
+          "method": {
+            "type": "string",
+            "enum": ["CARD", "MOBILE_MONEY", "BANK_TRANSFER", "CASH"],
+            "example": "CARD"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["PENDING", "PAID", "FAILED", "REFUNDED"],
+            "example": "PENDING"
+          },
+          "reference": {
+            "type": "string",
+            "example": "TXN-123456"
+          }
+        }
+      },
+      "UpdatePaymentInput": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "example": 2400
+          },
+          "method": {
+            "type": "string",
+            "enum": ["CARD", "MOBILE_MONEY", "BANK_TRANSFER", "CASH"],
+            "example": "BANK_TRANSFER"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["PENDING", "PAID", "FAILED", "REFUNDED"],
+            "example": "PAID"
+          },
+          "reference": {
+            "type": "string",
+            "example": "TXN-654321"
+          }
+        }
+      },
+      "CreateInventoryInput": {
+        "type": "object",
+        "required": ["productId", "changeType", "quantityChange"],
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "example": 1
+          },
+          "changeType": {
+            "type": "string",
+            "enum": ["RESTOCK", "SALE", "RETURN", "ADJUSTMENT"],
+            "example": "RESTOCK"
+          },
+          "quantityChange": {
+            "type": "integer",
+            "example": 10
+          },
+          "note": {
+            "type": "string",
+            "example": "Restocked from supplier"
+          }
+        }
+      },
+      "UpdateInventoryInput": {
+        "type": "object",
+        "properties": {
+          "changeType": {
+            "type": "string",
+            "enum": ["RESTOCK", "SALE", "RETURN", "ADJUSTMENT"],
+            "example": "ADJUSTMENT"
+          },
+          "quantityChange": {
+            "type": "integer",
+            "example": -2
+          },
+          "note": {
+            "type": "string",
+            "example": "Stock correction"
+          }
+        }
+      },
+      "CreateShipmentInput": {
+        "type": "object",
+        "required": ["orderId", "address"],
+        "properties": {
+          "orderId": {
+            "type": "integer",
+            "example": 1
+          },
+          "address": {
+            "type": "string",
+            "example": "Kampala, Uganda"
+          },
+          "trackingNumber": {
+            "type": "string",
+            "example": "TRK-1001"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["PENDING", "PACKED", "SHIPPED", "DELIVERED", "RETURNED"],
+            "example": "PENDING"
+          },
+          "shippedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "deliveredAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "UpdateShipmentInput": {
+        "type": "object",
+        "properties": {
+          "trackingNumber": {
+            "type": "string",
+            "example": "TRK-2002"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["PENDING", "PACKED", "SHIPPED", "DELIVERED", "RETURNED"],
+            "example": "DELIVERED"
+          },
+          "shippedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "deliveredAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CreateReviewInput": {
+        "type": "object",
+        "required": ["productId", "userId", "rating"],
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "example": 1
+          },
+          "userId": {
+            "type": "integer",
+            "example": 1
+          },
+          "rating": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5,
+            "example": 5
+          },
+          "comment": {
+            "type": "string",
+            "example": "Very good quality"
+          }
+        }
+      },
+      "UpdateReviewInput": {
+        "type": "object",
+        "properties": {
+          "rating": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5,
+            "example": 4
+          },
+          "comment": {
+            "type": "string",
+            "example": "Still good after one week"
+          }
+        }
+      },
+      "CreateReturnRequestInput": {
+        "type": "object",
+        "required": ["orderId", "userId", "reason"],
+        "properties": {
+          "orderId": {
+            "type": "integer",
+            "example": 1
+          },
+          "userId": {
+            "type": "integer",
+            "example": 1
+          },
+          "reason": {
+            "type": "string",
+            "example": "Wrong size delivered"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "REQUESTED",
+              "APPROVED",
+              "REJECTED",
+              "RECEIVED",
+              "REFUNDED"
+            ],
+            "example": "REQUESTED"
+          }
+        }
+      },
+      "UpdateReturnRequestInput": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "example": "Updated reason"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "REQUESTED",
+              "APPROVED",
+              "REJECTED",
+              "RECEIVED",
+              "REFUNDED"
+            ],
+            "example": "APPROVED"
           }
         }
       }
@@ -554,6 +2643,137 @@
             },
             "example": {
               "message": "Order not found"
+            }
+          }
+        }
+      },
+      "NotFoundUser": {
+        "description": "User not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/MessageResponse"
+            },
+            "example": {
+              "message": "User not found"
+            }
+          }
+        }
+      },
+      "UnsupportedMediaType": {
+        "description": "Unsupported media type",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "message": "Unsupported Media Type",
+              "error": "Content-Type must be application/json"
+            }
+          }
+        }
+      },
+      "NotFoundCategory": {
+        "description": "Category not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/MessageResponse"
+            },
+            "example": {
+              "message": "Category not found"
+            }
+          }
+        }
+      },
+      "NotFoundCart": {
+        "description": "Cart not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/MessageResponse"
+            },
+            "example": {
+              "message": "Cart not found"
+            }
+          }
+        }
+      },
+      "NotFoundCartItem": {
+        "description": "Cart item not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/MessageResponse"
+            },
+            "example": {
+              "message": "Cart item not found"
+            }
+          }
+        }
+      },
+      "NotFoundPayment": {
+        "description": "Payment not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/MessageResponse"
+            },
+            "example": {
+              "message": "Payment not found"
+            }
+          }
+        }
+      },
+      "NotFoundInventory": {
+        "description": "Inventory entry not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/MessageResponse"
+            },
+            "example": {
+              "message": "Inventory entry not found"
+            }
+          }
+        }
+      },
+      "NotFoundShipment": {
+        "description": "Shipment not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/MessageResponse"
+            },
+            "example": {
+              "message": "Shipment not found"
+            }
+          }
+        }
+      },
+      "NotFoundReview": {
+        "description": "Review not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/MessageResponse"
+            },
+            "example": {
+              "message": "Review not found"
+            }
+          }
+        }
+      },
+      "NotFoundReturnRequest": {
+        "description": "Return request not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/MessageResponse"
+            },
+            "example": {
+              "message": "Return request not found"
             }
           }
         }
