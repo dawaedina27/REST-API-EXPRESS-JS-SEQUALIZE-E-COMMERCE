@@ -21,7 +21,10 @@ const createOrder = async (req, res) => {
   try {
     const { productId, quantity, status } = req.body;
 
-    const product = await Product.findByPk(productId, { transaction, lock: true });
+    const product = await Product.findByPk(productId, {
+      transaction,
+      lock: true,
+    });
     if (!product) {
       await transaction.rollback();
       return res.status(404).json({ message: "Product not found" });
@@ -34,7 +37,10 @@ const createOrder = async (req, res) => {
 
     // Store total at order-time price to keep a purchase snapshot.
     const totalPrice = Number(product.price) * Number(quantity);
-    const order = await Order.create({ productId, quantity, totalPrice, status }, { transaction });
+    const order = await Order.create(
+      { productId, quantity, totalPrice, status },
+      { transaction },
+    );
 
     await product.update({ stock: product.stock - quantity }, { transaction });
     await transaction.commit();
@@ -57,7 +63,9 @@ const getOrders = async (req, res) => {
 
 const getOrderById = async (req, res) => {
   try {
-    const order = await findOrderOr404(req.params.id, res, { include: orderInclude });
+    const order = await findOrderOr404(req.params.id, res, {
+      include: orderInclude,
+    });
     if (!order) return;
     return res.status(200).json(order);
   } catch (error) {
@@ -68,7 +76,10 @@ const getOrderById = async (req, res) => {
 const updateOrder = async (req, res) => {
   const transaction = await sequelize.transaction();
   try {
-    const order = await findOrderOr404(req.params.id, res, { transaction, lock: true });
+    const order = await findOrderOr404(req.params.id, res, {
+      transaction,
+      lock: true,
+    });
     if (!order) {
       await transaction.rollback();
       return;
@@ -79,7 +90,10 @@ const updateOrder = async (req, res) => {
     let updatedTotal = Number(order.totalPrice);
 
     if (quantity !== undefined) {
-      const product = await Product.findByPk(order.productId, { transaction, lock: true });
+      const product = await Product.findByPk(order.productId, {
+        transaction,
+        lock: true,
+      });
       if (!product) {
         await transaction.rollback();
         return res.status(404).json({ message: "Related product not found" });
@@ -92,17 +106,23 @@ const updateOrder = async (req, res) => {
       }
 
       // When quantity goes up, reduce stock. When it goes down, return stock.
-      await product.update({ stock: product.stock - quantityDelta }, { transaction });
+      await product.update(
+        { stock: product.stock - quantityDelta },
+        { transaction },
+      );
 
       nextQuantity = Number(quantity);
       updatedTotal = Number(product.price) * nextQuantity;
     }
 
-    await order.update({
-      quantity: nextQuantity,
-      status: status || order.status,
-      totalPrice: updatedTotal,
-    }, { transaction });
+    await order.update(
+      {
+        quantity: nextQuantity,
+        status: status || order.status,
+        totalPrice: updatedTotal,
+      },
+      { transaction },
+    );
 
     await transaction.commit();
 
@@ -116,16 +136,25 @@ const updateOrder = async (req, res) => {
 const deleteOrder = async (req, res) => {
   const transaction = await sequelize.transaction();
   try {
-    const order = await findOrderOr404(req.params.id, res, { transaction, lock: true });
+    const order = await findOrderOr404(req.params.id, res, {
+      transaction,
+      lock: true,
+    });
     if (!order) {
       await transaction.rollback();
       return;
     }
 
-    const product = await Product.findByPk(order.productId, { transaction, lock: true });
+    const product = await Product.findByPk(order.productId, {
+      transaction,
+      lock: true,
+    });
     if (product) {
       // Return quantity to stock when an order is removed.
-      await product.update({ stock: product.stock + order.quantity }, { transaction });
+      await product.update(
+        { stock: product.stock + order.quantity },
+        { transaction },
+      );
     }
 
     await order.destroy({ transaction });

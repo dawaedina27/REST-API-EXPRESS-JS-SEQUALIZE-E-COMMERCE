@@ -36,7 +36,6 @@ app.use((req, res) => {
 });
 
 const startServer = async () => {
-
   try {
     // Verify DB credentials first, then create/update tables.
     await sequelize.authenticate();
@@ -50,8 +49,13 @@ const startServer = async () => {
     console.error("Unable to connect to database.");
     console.error("message:", error.message);
     if (error.parent?.code) console.error("code:", error.parent.code);
-    if (error.parent?.sqlMessage) console.error("sqlMessage:", error.parent.sqlMessage);
+    if (error.parent?.sqlMessage)
+      console.error("sqlMessage:", error.parent.sqlMessage);
   }
 };
 
-startServer();
+if (require.main === module) {
+  startServer();
+}
+
+module.exports = { app, startServer };

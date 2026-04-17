@@ -29,14 +29,20 @@ const Order = sequelize.define(
       },
     },
     status: {
-      type: DataTypes.ENUM("PENDING", "PAID", "SHIPPED", "DELIVERED", "CANCELLED"),
+      type: DataTypes.ENUM(
+        "PENDING",
+        "PAID",
+        "SHIPPED",
+        "DELIVERED",
+        "CANCELLED",
+      ),
       defaultValue: "PENDING",
     },
   },
   {
     tableName: "orders",
     timestamps: true,
-  }
+  },
 );
 
 module.exports = Order;

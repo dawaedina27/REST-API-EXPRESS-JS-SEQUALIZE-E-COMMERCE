@@ -48,7 +48,9 @@ const updateProduct = async (req, res) => {
 
     const { name, description, price, stock } = req.body;
     const payload = { name, description, price, stock };
-    const updates = Object.fromEntries(Object.entries(payload).filter(([, value]) => value !== undefined));
+    const updates = Object.fromEntries(
+      Object.entries(payload).filter(([, value]) => value !== undefined),
+    );
 
     await product.update(updates);
     return res.status(200).json(product);

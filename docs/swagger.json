@@ -24,9 +24,7 @@
   "paths": {
     "/api/products": {
       "post": {
-        "tags": [
-          "Products"
-        ],
+        "tags": ["Products"],
         "summary": "Create a product",
         "requestBody": {
           "required": true,
@@ -55,9 +53,7 @@
         }
       },
       "get": {
-        "tags": [
-          "Products"
-        ],
+        "tags": ["Products"],
         "summary": "Get all products",
         "responses": {
           "200": {
@@ -81,9 +77,7 @@
     },
     "/api/products/{id}": {
       "get": {
-        "tags": [
-          "Products"
-        ],
+        "tags": ["Products"],
         "summary": "Get one product by ID",
         "parameters": [
           {
@@ -110,9 +104,7 @@
         }
       },
       "put": {
-        "tags": [
-          "Products"
-        ],
+        "tags": ["Products"],
         "summary": "Update a product",
         "parameters": [
           {
@@ -149,9 +141,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Products"
-        ],
+        "tags": ["Products"],
         "summary": "Delete a product",
         "parameters": [
           {
@@ -180,9 +170,7 @@
     },
     "/api/orders": {
       "post": {
-        "tags": [
-          "Orders"
-        ],
+        "tags": ["Orders"],
         "summary": "Create an order",
         "requestBody": {
           "required": true,
@@ -214,9 +202,7 @@
         }
       },
       "get": {
-        "tags": [
-          "Orders"
-        ],
+        "tags": ["Orders"],
         "summary": "Get all orders",
         "responses": {
           "200": {
@@ -240,9 +226,7 @@
     },
     "/api/orders/{id}": {
       "get": {
-        "tags": [
-          "Orders"
-        ],
+        "tags": ["Orders"],
         "summary": "Get one order by ID",
         "parameters": [
           {
@@ -269,9 +253,7 @@
         }
       },
       "put": {
-        "tags": [
-          "Orders"
-        ],
+        "tags": ["Orders"],
         "summary": "Update an order",
         "parameters": [
           {
@@ -308,9 +290,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Orders"
-        ],
+        "tags": ["Orders"],
         "summary": "Delete an order",
         "parameters": [
           {
@@ -405,13 +385,7 @@
           },
           "status": {
             "type": "string",
-            "enum": [
-              "PENDING",
-              "PAID",
-              "SHIPPED",
-              "DELIVERED",
-              "CANCELLED"
-            ]
+            "enum": ["PENDING", "PAID", "SHIPPED", "DELIVERED", "CANCELLED"]
           },
           "createdAt": {
             "type": "string",
@@ -440,11 +414,7 @@
       },
       "CreateProductInput": {
         "type": "object",
-        "required": [
-          "name",
-          "price",
-          "stock"
-        ],
+        "required": ["name", "price", "stock"],
         "properties": {
           "name": {
             "type": "string",
@@ -487,10 +457,7 @@
       },
       "CreateOrderInput": {
         "type": "object",
-        "required": [
-          "productId",
-          "quantity"
-        ],
+        "required": ["productId", "quantity"],
         "properties": {
           "productId": {
             "type": "integer",
@@ -502,13 +469,7 @@
           },
           "status": {
             "type": "string",
-            "enum": [
-              "PENDING",
-              "PAID",
-              "SHIPPED",
-              "DELIVERED",
-              "CANCELLED"
-            ],
+            "enum": ["PENDING", "PAID", "SHIPPED", "DELIVERED", "CANCELLED"],
             "example": "PENDING"
           }
         }
@@ -522,13 +483,7 @@
           },
           "status": {
             "type": "string",
-            "enum": [
-              "PENDING",
-              "PAID",
-              "SHIPPED",
-              "DELIVERED",
-              "CANCELLED"
-            ],
+            "enum": ["PENDING", "PAID", "SHIPPED", "DELIVERED", "CANCELLED"],
             "example": "PAID"
           }
         }
