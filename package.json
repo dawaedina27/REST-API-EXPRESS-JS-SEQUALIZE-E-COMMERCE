@@ -10,6 +10,8 @@
     "format:check": "prettier --check .",
     "lint": "eslint .",
     "test": "node test/app.test.js",
+    "test:unit": "node test/unit/run-unit-tests.js",
+    "test:tdd": "nodemon --watch middleware --watch test/unit --ext js --exec \"node test/unit/run-unit-tests.js\"",
     "test:bdd": "cucumber-js --require features/step_definitions/**/*.js",
     "coverage": "c8 --reporter=text --reporter=lcov npm run test",
     "swagger:validate": "node -e \"require('@apidevtools/swagger-parser').validate('docs/swagger.json').then(() => console.log('Swagger spec is valid')).catch((error) => { console.error(error.message); process.exit(1); })\""
