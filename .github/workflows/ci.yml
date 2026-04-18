@@ -67,6 +67,25 @@ jobs:
       - name: Run tests
         run: npm test
 
+  bdd:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run BDD tests
+        run: npm run test:bdd
+
   coverage:
     runs-on: ubuntu-latest
 
