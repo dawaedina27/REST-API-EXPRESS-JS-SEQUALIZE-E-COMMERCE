@@ -3,7 +3,7 @@
   "info": {
     "title": "E-Commerce API",
     "version": "1.0.0",
-    "description": "REST API built with Express.js and Sequelize for products, orders, users, and core e-commerce resources. Includes request logging, JSON content-type enforcement, centralized 404 handling, and error handling middleware."
+    "description": "REST API built with Express.js and Sequelize. Versioned endpoints are exposed under /api/v1."
   },
   "servers": [
     {
@@ -62,7 +62,7 @@
     }
   ],
   "paths": {
-    "/api/products": {
+    "/api/v1/products": {
       "post": {
         "tags": ["Products"],
         "summary": "Create a product",
@@ -115,7 +115,7 @@
         }
       }
     },
-    "/api/products/{id}": {
+    "/api/v1/products/{id}": {
       "get": {
         "tags": ["Products"],
         "summary": "Get one product by ID",
@@ -208,7 +208,7 @@
         }
       }
     },
-    "/api/orders": {
+    "/api/v1/orders": {
       "post": {
         "tags": ["Orders"],
         "summary": "Create an order",
@@ -264,7 +264,7 @@
         }
       }
     },
-    "/api/orders/{id}": {
+    "/api/v1/orders/{id}": {
       "get": {
         "tags": ["Orders"],
         "summary": "Get one order by ID",
@@ -357,7 +357,7 @@
         }
       }
     },
-    "/api/users": {
+    "/api/v1/users": {
       "post": {
         "tags": ["Users"],
         "summary": "Create a user",
@@ -410,7 +410,7 @@
         }
       }
     },
-    "/api/users/{id}": {
+    "/api/v1/users/{id}": {
       "get": {
         "tags": ["Users"],
         "summary": "Get one user by ID",
@@ -524,7 +524,7 @@
         }
       }
     },
-    "/api/categories": {
+    "/api/v1/categories": {
       "post": {
         "tags": ["Categories"],
         "summary": "Create a categorie",
@@ -580,7 +580,7 @@
         }
       }
     },
-    "/api/categories/{id}": {
+    "/api/v1/categories/{id}": {
       "get": {
         "tags": ["Categories"],
         "summary": "Get one categorie by ID",
@@ -676,7 +676,7 @@
         }
       }
     },
-    "/api/carts": {
+    "/api/v1/carts": {
       "post": {
         "tags": ["Carts"],
         "summary": "Create a cart",
@@ -732,7 +732,7 @@
         }
       }
     },
-    "/api/carts/{id}": {
+    "/api/v1/carts/{id}": {
       "get": {
         "tags": ["Carts"],
         "summary": "Get one cart by ID",
@@ -828,7 +828,7 @@
         }
       }
     },
-    "/api/cart-items": {
+    "/api/v1/cart-items": {
       "post": {
         "tags": ["Cart Items"],
         "summary": "Create a cart item",
@@ -884,7 +884,7 @@
         }
       }
     },
-    "/api/cart-items/{id}": {
+    "/api/v1/cart-items/{id}": {
       "get": {
         "tags": ["Cart Items"],
         "summary": "Get one cart item by ID",
@@ -980,7 +980,7 @@
         }
       }
     },
-    "/api/payments": {
+    "/api/v1/payments": {
       "post": {
         "tags": ["Payments"],
         "summary": "Create a payment",
@@ -1036,7 +1036,7 @@
         }
       }
     },
-    "/api/payments/{id}": {
+    "/api/v1/payments/{id}": {
       "get": {
         "tags": ["Payments"],
         "summary": "Get one payment by ID",
@@ -1132,7 +1132,7 @@
         }
       }
     },
-    "/api/inventory": {
+    "/api/v1/inventory": {
       "post": {
         "tags": ["Inventory"],
         "summary": "Create a inventor",
@@ -1188,7 +1188,7 @@
         }
       }
     },
-    "/api/inventory/{id}": {
+    "/api/v1/inventory/{id}": {
       "get": {
         "tags": ["Inventory"],
         "summary": "Get one inventor by ID",
@@ -1284,7 +1284,7 @@
         }
       }
     },
-    "/api/shipments": {
+    "/api/v1/shipments": {
       "post": {
         "tags": ["Shipments"],
         "summary": "Create a shipment",
@@ -1340,7 +1340,7 @@
         }
       }
     },
-    "/api/shipments/{id}": {
+    "/api/v1/shipments/{id}": {
       "get": {
         "tags": ["Shipments"],
         "summary": "Get one shipment by ID",
@@ -1436,7 +1436,7 @@
         }
       }
     },
-    "/api/reviews": {
+    "/api/v1/reviews": {
       "post": {
         "tags": ["Reviews"],
         "summary": "Create a review",
@@ -1492,7 +1492,7 @@
         }
       }
     },
-    "/api/reviews/{id}": {
+    "/api/v1/reviews/{id}": {
       "get": {
         "tags": ["Reviews"],
         "summary": "Get one review by ID",
@@ -1588,7 +1588,7 @@
         }
       }
     },
-    "/api/returns": {
+    "/api/v1/returns": {
       "post": {
         "tags": ["Returns"],
         "summary": "Create a return",
@@ -1644,7 +1644,7 @@
         }
       }
     },
-    "/api/returns/{id}": {
+    "/api/v1/returns/{id}": {
       "get": {
         "tags": ["Returns"],
         "summary": "Get one return by ID",

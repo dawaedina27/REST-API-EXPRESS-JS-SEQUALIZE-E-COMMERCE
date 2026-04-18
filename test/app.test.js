@@ -3,6 +3,7 @@ const request = require("supertest");
 const { app } = require("../app");
 const Product = require("../models/product");
 const User = require("../models/user");
+const API_PREFIX = `/api/${process.env.API_VERSION || "v1"}`;
 
 function stubMethod(target, methodName, implementation) {
   const original = target[methodName];
@@ -37,7 +38,7 @@ async function run() {
 
   try {
     const createResponse = await request(app)
-      .post("/api/products")
+      .post(`${API_PREFIX}/products`)
       .send(newProductPayload);
 
     assert.equal(createResponse.status, 201);
@@ -70,7 +71,7 @@ async function run() {
   );
 
   try {
-    const productsResponse = await request(app).get("/api/products");
+    const productsResponse = await request(app).get(`${API_PREFIX}/products`);
 
     assert.equal(productsResponse.status, 200);
     assert.deepEqual(productsResponse.body, mockProducts);
@@ -90,7 +91,7 @@ async function run() {
 
   try {
     const createUserResponse = await request(app)
-      .post("/api/users")
+      .post(`${API_PREFIX}/users`)
       .send(newUserPayload);
 
     assert.equal(createUserResponse.status, 201);
@@ -112,7 +113,7 @@ async function run() {
   const restoreUserFindAll = stubMethod(User, "findAll", async () => mockUsers);
 
   try {
-    const usersResponse = await request(app).get("/api/users");
+    const usersResponse = await request(app).get(`${API_PREFIX}/users`);
 
     assert.equal(usersResponse.status, 200);
     assert.deepEqual(usersResponse.body, mockUsers);

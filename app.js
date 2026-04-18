@@ -33,6 +33,8 @@ const errorHandler = require("./middleware/errorHandler");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const API_VERSION = process.env.API_VERSION || "v1";
+const API_PREFIX = `/api/${API_VERSION}`;
 
 // Parse JSON request bodies.
 app.use(express.json());
@@ -124,17 +126,17 @@ app.get("/", (req, res) => {
 // Swagger API docs.
 setupSwagger(app);
 
-app.use("/api/products", productRoutes);
-app.use("/api/orders", orderRoutes);
-app.use("/api/users", userRoutes);
-app.use("/api/categories", categoryRoutes);
-app.use("/api/carts", cartRoutes);
-app.use("/api/cart-items", cartItemRoutes);
-app.use("/api/payments", paymentRoutes);
-app.use("/api/inventory", inventoryRoutes);
-app.use("/api/shipments", shipmentRoutes);
-app.use("/api/reviews", reviewRoutes);
-app.use("/api/returns", returnRequestRoutes);
+app.use(`${API_PREFIX}/products`, productRoutes);
+app.use(`${API_PREFIX}/orders`, orderRoutes);
+app.use(`${API_PREFIX}/users`, userRoutes);
+app.use(`${API_PREFIX}/categories`, categoryRoutes);
+app.use(`${API_PREFIX}/carts`, cartRoutes);
+app.use(`${API_PREFIX}/cart-items`, cartItemRoutes);
+app.use(`${API_PREFIX}/payments`, paymentRoutes);
+app.use(`${API_PREFIX}/inventory`, inventoryRoutes);
+app.use(`${API_PREFIX}/shipments`, shipmentRoutes);
+app.use(`${API_PREFIX}/reviews`, reviewRoutes);
+app.use(`${API_PREFIX}/returns`, returnRequestRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
