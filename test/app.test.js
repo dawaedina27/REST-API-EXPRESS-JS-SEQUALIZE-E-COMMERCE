@@ -1,6 +1,7 @@
 const assert = require("node:assert/strict");
 const request = require("supertest");
 const bcrypt = require("bcryptjs");
+process.env.JWT_SECRET = process.env.JWT_SECRET || "test_jwt_secret";
 const { app } = require("../app");
 const Product = require("../models/product");
 const User = require("../models/user");

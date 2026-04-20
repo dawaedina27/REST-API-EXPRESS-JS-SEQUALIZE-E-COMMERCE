@@ -2,8 +2,11 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
-const JWT_SECRET = process.env.JWT_SECRET || "change_me_in_env";
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "1h";
+
+if (!process.env.JWT_SECRET) {
+  throw new Error("Missing JWT_SECRET. Set JWT_SECRET in your environment.");
+}
 
 const sanitizeUser = (user) => ({
   id: user.id,
@@ -21,7 +24,7 @@ const buildToken = (user) =>
       email: user.email,
       role: user.role,
     },
-    JWT_SECRET,
+    process.env.JWT_SECRET,
     { expiresIn: JWT_EXPIRES_IN },
   );
 

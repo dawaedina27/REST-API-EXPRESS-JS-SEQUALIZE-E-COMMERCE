@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken");
 
-const JWT_SECRET = process.env.JWT_SECRET || "change_me_in_env";
+if (!process.env.JWT_SECRET) {
+  throw new Error("Missing JWT_SECRET. Set JWT_SECRET in your environment.");
+}
 
 const authenticateToken = (req, res, next) => {
   const authorization = req.headers.authorization || "";
@@ -14,7 +16,7 @@ const authenticateToken = (req, res, next) => {
   }
 
   try {
-    const payload = jwt.verify(token, JWT_SECRET);
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
     req.user = {
       id: payload.sub,
       email: payload.email,

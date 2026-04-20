@@ -1,6 +1,7 @@
 const assert = require("node:assert/strict");
 const { Given, When, Then, After } = require("@cucumber/cucumber");
 const request = require("supertest");
+process.env.JWT_SECRET = process.env.JWT_SECRET || "test_jwt_secret";
 const { app } = require("../../app");
 const User = require("../../models/user");
 
