@@ -1,5 +1,6 @@
 const assert = require("node:assert/strict");
 const request = require("supertest");
+const bcrypt = require("bcryptjs");
 const { app } = require("../app");
 const Product = require("../models/product");
 const User = require("../models/user");
@@ -120,6 +121,69 @@ async function run() {
   } finally {
     restoreUserFindAll();
   }
+
+  const restoreFindOneForRegister = stubMethod(
+    User,
+    "findOne",
+    async () => null,
+  );
+  const restoreCreateForRegister = stubMethod(
+    User,
+    "create",
+    async (payload) => ({
+      id: 10,
+      ...payload,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }),
+  );
+
+  try {
+    const registerResponse = await request(app)
+      .post(`${API_PREFIX}/auth/register`)
+      .send({
+        name: "Auth User",
+        email: "auth@example.com",
+        password: "StrongPass123!",
+      });
+
+    assert.equal(registerResponse.status, 201);
+    assert.equal(registerResponse.body.user.email, "auth@example.com");
+    assert.ok(typeof registerResponse.body.token === "string");
+  } finally {
+    restoreCreateForRegister();
+    restoreFindOneForRegister();
+  }
+
+  const passwordHash = await bcrypt.hash("StrongPass123!", 10);
+  const restoreFindOneForLogin = stubMethod(User, "findOne", async () => ({
+    id: 10,
+    name: "Auth User",
+    email: "auth@example.com",
+    role: "CUSTOMER",
+    passwordHash,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  }));
+
+  try {
+    const loginResponse = await request(app)
+      .post(`${API_PREFIX}/auth/login`)
+      .send({
+        email: "auth@example.com",
+        password: "StrongPass123!",
+      });
+
+    assert.equal(loginResponse.status, 200);
+    assert.equal(loginResponse.body.user.email, "auth@example.com");
+    assert.ok(typeof loginResponse.body.token === "string");
+  } finally {
+    restoreFindOneForLogin();
+  }
+
+  const protectedRouteResponse = await request(app).get(`${API_PREFIX}/carts`);
+  assert.equal(protectedRouteResponse.status, 401);
+  assert.equal(protectedRouteResponse.body.message, "Unauthorized");
 
   console.log("PASS test/app.test.js");
 }

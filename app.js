@@ -26,10 +26,12 @@ const inventoryRoutes = require("./routes/inventoryRoutes");
 const shipmentRoutes = require("./routes/shipmentRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
 const returnRequestRoutes = require("./routes/returnRequestRoutes");
+const authRoutes = require("./routes/authRoutes");
 const requestLogger = require("./middleware/requestLogger");
 const requireJson = require("./middleware/requireJson");
 const notFound = require("./middleware/notFound");
 const errorHandler = require("./middleware/errorHandler");
+const { authenticateToken, authorizeRoles } = require("./middleware/auth");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -126,17 +128,23 @@ app.get("/", (req, res) => {
 // Swagger API docs.
 setupSwagger(app);
 
+app.use(`${API_PREFIX}/auth`, authRoutes);
 app.use(`${API_PREFIX}/products`, productRoutes);
-app.use(`${API_PREFIX}/orders`, orderRoutes);
+app.use(`${API_PREFIX}/orders`, authenticateToken, orderRoutes);
 app.use(`${API_PREFIX}/users`, userRoutes);
 app.use(`${API_PREFIX}/categories`, categoryRoutes);
-app.use(`${API_PREFIX}/carts`, cartRoutes);
-app.use(`${API_PREFIX}/cart-items`, cartItemRoutes);
-app.use(`${API_PREFIX}/payments`, paymentRoutes);
-app.use(`${API_PREFIX}/inventory`, inventoryRoutes);
-app.use(`${API_PREFIX}/shipments`, shipmentRoutes);
-app.use(`${API_PREFIX}/reviews`, reviewRoutes);
-app.use(`${API_PREFIX}/returns`, returnRequestRoutes);
+app.use(`${API_PREFIX}/carts`, authenticateToken, cartRoutes);
+app.use(`${API_PREFIX}/cart-items`, authenticateToken, cartItemRoutes);
+app.use(`${API_PREFIX}/payments`, authenticateToken, paymentRoutes);
+app.use(
+  `${API_PREFIX}/inventory`,
+  authenticateToken,
+  authorizeRoles("ADMIN"),
+  inventoryRoutes,
+);
+app.use(`${API_PREFIX}/shipments`, authenticateToken, shipmentRoutes);
+app.use(`${API_PREFIX}/reviews`, authenticateToken, reviewRoutes);
+app.use(`${API_PREFIX}/returns`, authenticateToken, returnRequestRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

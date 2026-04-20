@@ -59,6 +59,22 @@ npm start
 - Swagger UI: `http://localhost:5000/api-docs`
 - OpenAPI JSON: `http://localhost:5000/api-docs.json`
 
+## Authentication
+
+JWT authentication is available under:
+
+- `POST /api/v1/auth/register`
+- `POST /api/v1/auth/login`
+
+Use the returned token as:
+
+```http
+Authorization: Bearer <token>
+```
+
+Protected endpoints include orders, carts, cart-items, payments, inventory, shipments, reviews, and returns.
+`inventory` additionally requires `ADMIN` role.
+
 ## Testing and Quality
 
 ### Main scripts
